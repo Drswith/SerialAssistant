@@ -107,6 +107,12 @@ provide('serial', serial)
 
 const ble = useBle({ onReadFrame })
 provide('ble', ble)
+
+const terminalPanelRef = ref(null)
+
+function onRightPanelResize(_size, _prevSize) {
+  terminalPanelRef.value?.fit()
+}
 </script>
 
 <template>
@@ -131,8 +137,9 @@ provide('ble', ble)
             </div>
           </ResizablePanel>
           <ResizableHandle with-handle />
-          <ResizablePanel :default-size="80">
-            <ResizablePanelGroup direction="vertical">
+          <ResizablePanel :default-size="80" @resize="onRightPanelResize">
+            <TerminalPanel ref="terminalPanelRef" />
+            <ResizablePanelGroup v-if="false" direction="vertical">
               <ResizablePanel :default-size="70">
                 <RecordPanel class="bg-background w-full h-full" />
               </ResizablePanel>
